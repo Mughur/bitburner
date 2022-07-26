@@ -1142,6 +1142,7 @@ export class Sleeve extends Person {
         this.contractGainRates(p, "Contracts", contract);
         this.currentTaskLocation = this.contractSuccessChance(p, "Contracts", contract);
         this.bbContract = capitalizeEachWord(contract.toLowerCase());
+        this.crimeType = capitalizeEachWord(contract.toLowerCase());
         break;
     }
 
@@ -1196,15 +1197,16 @@ export class Sleeve extends Person {
       return;
     }
     const retValue = bb.getActionStats(action, true);
-    this.gainRatesForTask.hack = retValue.hack;
-    this.gainRatesForTask.str = retValue.str;
-    this.gainRatesForTask.def = retValue.def;
-    this.gainRatesForTask.dex = retValue.dex;
-    this.gainRatesForTask.agi = retValue.agi;
-    this.gainRatesForTask.cha = retValue.cha;
+    const actionTime = this.getBladeburnerActionTime(p,type,name)/1000;
+    this.gainRatesForTask.hack = retValue.hack / actionTime / 5;
+    this.gainRatesForTask.str = retValue.str / actionTime / 5;
+    this.gainRatesForTask.def = retValue.def / actionTime / 5;
+    this.gainRatesForTask.dex = retValue.dex / actionTime / 5;
+    this.gainRatesForTask.agi = retValue.agi / actionTime / 5;
+    this.gainRatesForTask.cha = retValue.cha / actionTime / 5;
     const rewardMultiplier = Math.pow(action.rewardFac, action.level - 1);
     this.gainRatesForTask.money =
-      BladeburnerConstants.ContractBaseMoneyGain * rewardMultiplier * bb.skillMultipliers.money;
+      BladeburnerConstants.ContractBaseMoneyGain * rewardMultiplier * bb.skillMultipliers.money / actionTime/5;
   }
 
   getBladeburnerActionTime(p: IPlayer, type: string, name: string): number {
