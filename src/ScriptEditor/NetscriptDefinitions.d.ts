@@ -6865,6 +6865,31 @@ export interface WarehouseAPI {
  */
 export interface Corporation extends WarehouseAPI, OfficeAPI {
   /**
+   * Get list of materials
+   * @returns material names
+   */
+  getMaterialNames():string[];
+  /**
+   * Get list of industry types
+   * @returns industry names
+   */
+  getIndustryTypes():string[];
+  /**
+   * Get list of one-time unlockable upgrades
+   * @returns unlockable upgrades names
+   */
+  getUnlockables():string[];
+  /**
+   * Get list of upgrade names
+   * @returns upgrade names
+   */
+  getUpgradeNames():string[];
+  /**
+   * Get list of research names
+   * @returns research names
+   */
+  getResarchNames():string[];
+  /**
    * Create a Corporation
    * @param divisionName - Name of the division
    * @param selfFund - If you should self fund, defaults to true, false will only work on Bitnode 3

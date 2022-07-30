@@ -305,6 +305,27 @@ export function NetscriptCorporation(player: IPlayer): InternalAPI<NSCorporation
     };
   }
 
+  function getMaterialNames(): string[] {
+    return CorporationConstants.AllMaterials;
+  }
+
+  function getIndustryTypes(): string[] {
+    return CorporationConstants.AllIndustryTypes;
+  }
+
+  function getUnlockables(): string[] {
+    return CorporationConstants.AllUnlocks;
+  }
+
+  function getUpgradeNames(): string[] {
+    return CorporationConstants.AllUpgrades;
+  }
+
+  function getResarchNames(): string[] {
+    return CorporationConstants.AllResearch;
+  }
+
+
   const warehouseAPI: InternalAPI<WarehouseAPI> = {
     getPurchaseWarehouseCost: (ctx: NetscriptContext) => (): number => {
       checkAccess(ctx, 7);
@@ -871,6 +892,31 @@ export function NetscriptCorporation(player: IPlayer): InternalAPI<NSCorporation
   return {
     ...warehouseAPI,
     ...officeAPI,
+    getMaterialNames:
+      (ctx: NetscriptContext) => 
+      (): string[] =>{
+        return getMaterialNames();
+    },
+    getIndustryTypes:
+      (ctx: NetscriptContext) => 
+      (): string[] =>{
+        return getIndustryTypes();
+    },
+    getUnlockables:
+      (ctx: NetscriptContext) => 
+      (): string[] =>{
+        return getUnlockables();
+    },
+    getUpgradeNames:
+      (ctx: NetscriptContext) => 
+      (): string[] =>{
+        return getUpgradeNames();
+    },
+    getResarchNames:
+      (ctx: NetscriptContext) => 
+      (): string[] =>{
+        return getResarchNames();
+    },
     expandIndustry:
       (ctx: NetscriptContext) =>
       (_industryName: unknown, _divisionName: unknown): void => {
