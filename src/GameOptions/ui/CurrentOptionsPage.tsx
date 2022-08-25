@@ -1,12 +1,15 @@
-import { MenuItem, Select, SelectChangeEvent, TextField, Tooltip, Typography } from "@mui/material";
+import { MenuItem, Select, SelectChangeEvent, TextField, Tooltip, Typography, Link } from "@mui/material";
 import React, { useState } from "react";
 import { IPlayer } from "../../PersonObjects/IPlayer";
+import { isRemoteFileApiConnectionLive, newRemoteFileApiConnection } from "../../RemoteFileAPI/RemoteFileAPI";
 import { Settings } from "../../Settings/Settings";
 import { OptionSwitch } from "../../ui/React/OptionSwitch";
 import { formatTime } from "../../utils/helpers/formatTime";
 import { GameOptionsTab } from "../GameOptionsTab";
 import { GameOptionsPage } from "./GameOptionsPage";
 import { OptionsSlider } from "./OptionsSlider";
+import Button from "@mui/material/Button";
+import { ConnectionBauble } from "./ConnectionBauble";
 
 interface IProps {
   currentTab: GameOptionsTab;
@@ -21,6 +24,7 @@ export const CurrentOptionsPage = (props: IProps): React.ReactElement => {
   const [terminalSize, setTerminalSize] = useState(Settings.MaxTerminalCapacity);
   const [autosaveInterval, setAutosaveInterval] = useState(Settings.AutosaveInterval);
   const [timestampFormat, setTimestampFormat] = useState(Settings.TimestampsFormat);
+  const [remoteFileApiPort, setRemoteFileApiPort] = useState(Settings.RemoteFileApiPort);
   const [locale, setLocale] = useState(Settings.Locale);
 
   function handleExecTimeChange(
@@ -79,6 +83,11 @@ export const CurrentOptionsPage = (props: IProps): React.ReactElement => {
   function handleTimestampFormatChange(event: React.ChangeEvent<HTMLInputElement>): void {
     setTimestampFormat(event.target.value);
     Settings.TimestampsFormat = event.target.value;
+  }
+
+  function handleRemoteFileApiPortChange(event: React.ChangeEvent<HTMLInputElement>): void {
+    setRemoteFileApiPort(Number(event.target.value) as number);
+    Settings.RemoteFileApiPort = Number(event.target.value);
   }
 
   const pages = {
@@ -361,6 +370,42 @@ export const CurrentOptionsPage = (props: IProps): React.ReactElement => {
             </>
           }
         />
+      </GameOptionsPage>
+    ),
+    [GameOptionsTab.REMOTE_API]: (
+      <GameOptionsPage title="Remote API">
+        <Typography>
+          These settings control the Remote API for bitburner. This is typically used to write scripts using an external
+          text editor and then upload files to the home server.
+        </Typography>
+        <Typography>
+          <Link href="#" target="_blank">
+            Documentation
+          </Link>
+        </Typography>
+        <ConnectionBauble isConnected={isRemoteFileApiConnectionLive} />
+        <Tooltip
+          title={
+            <Typography>
+              This port number is used to connect to a Remote API port, please ensure that it matches with your Remote
+              API server port. Set to 0 to disable the feature.
+            </Typography>
+          }
+        >
+          <TextField
+            InputProps={{
+              startAdornment: (
+                <Typography color={remoteFileApiPort > 0 && remoteFileApiPort <= 65535 ? "success" : "error"}>
+                  Port:&nbsp;
+                </Typography>
+              ),
+              endAdornment: <Button onClick={newRemoteFileApiConnection}>Connect</Button>,
+            }}
+            value={remoteFileApiPort}
+            onChange={handleRemoteFileApiPortChange}
+            placeholder="12525"
+          />
+        </Tooltip>
       </GameOptionsPage>
     ),
   };

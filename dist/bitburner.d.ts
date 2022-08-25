@@ -777,7 +777,12 @@ export declare interface CodingContract {
      * @param opts - Optional parameters for configuring function behavior.
      * @returns True if the solution was correct, false otherwise. If the returnReward option is configured, then the function will instead return a string. If the contract is successfully solved, the string will contain a description of the contract’s reward. Otherwise, it will be an empty string.
      */
-    attempt(answer: string[] | number, filename: string, host?: string, opts?: CodingAttemptOptions): boolean | string;
+    attempt(
+    answer: string | number | any[],
+    filename: string,
+    host?: string,
+    opts?: CodingAttemptOptions,
+    ): boolean | string;
 
     /**
      * Get the type of a coding contract.
@@ -3433,8 +3438,7 @@ export declare interface NS {
      * PID stands for Process ID. The PID is a unique identifier for each script.
      * The PID will always be a positive integer.
      *
-     * Running this function with a numThreads argument of 0 will return 0 without running the script.
-     * However, running this function with a negative numThreads argument will cause a runtime error.
+     * Running this function with a numThreads argument of 0 or less will cause a runtime error.
      *
      * @example
      * ```ts
@@ -3481,7 +3485,7 @@ export declare interface NS {
      * PID stands for Process ID. The PID is a unique identifier for each script.
      * The PID will always be a positive integer.
      *
-     * Running this function with 0 or a negative numThreads argument will cause a runtime error.
+     * Running this function with a numThreads argument of 0 or less will cause a runtime error.
      *
      * @example
      * ```ts
@@ -3526,6 +3530,8 @@ export declare interface NS {
      * on the local server.
      *
      * Because this function immediately terminates the script, it does not have a return value.
+     *
+     * Running this function with a numThreads argument of 0 or less will cause a runtime error.
      *
      * @example
      * ```ts
